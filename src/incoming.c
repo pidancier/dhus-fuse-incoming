@@ -16,15 +16,17 @@
 #include <fuse.h>
 
 static int inc_getattr(const char *path, struct stat *stbuf) {
-	(void) path;
 	memset(stbuf, 0, sizeof(struct stat));
-	if(strcmp(path, "/") == 0) {
-		stbuf->st_mode = S_IFDIR | 0755;
-		stbuf->st_nlink = 2;
-	}
-	else {
+
+	int len = strlen(path);
+	char *ext = strrchr(path, '.');
+	if (ext && len-(ext-path) == 4) { // .jpg | .zip
 		stbuf->st_mode = S_IFREG | 0644;
 		stbuf->st_nlink = 1;
+	}
+	else {
+		stbuf->st_mode = S_IFDIR | 0755;
+		stbuf->st_nlink = 2;
 	}
 	stbuf->st_uid = getuid();
 	stbuf->st_uid = getuid();
