@@ -59,7 +59,6 @@ static int inc_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
 }
 
 static int inc_open(const char *path, struct fuse_file_info *fi) {
-	int len = strlen(path);
         char *ext = strrchr(path, '.');
         if (ext && !strcmp(ext, ".jpg")) {
 		if (!strcmp(ext-2, "ql.jpg")) {
@@ -88,6 +87,7 @@ static int inc_release(const char *path, struct fuse_file_info *fi) {
 	if (fi->fh) {
 		close(fi->fh);
 	}
+	return 0;
 }
 
 static int inc_read(const char *path, char *buf, size_t size, off_t offset,
